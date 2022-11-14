@@ -9,7 +9,7 @@ pipeline {
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "192.168.49.6:8081"
         NEXUS_REPOSITORY = "bootcamp"
-        NEXUS_CREDENTIAL_ID = "nexus"
+        NEXUS_CREDENTIAL_ID = "jose-nexus"
     }
     stages{
     	stage("Publish to Nexus") {
@@ -24,7 +24,8 @@ pipeline {
                     // Extract the path from the File found
                     artifactPath = filesByGlob[0].path
                     // Assign to a boolean response verifying If the artifact name exists
-                    artifactExists = fileExists artifactPath                    if(artifactExists) {
+                    artifactExists = fileExists artifactPath                    
+                    if(artifactExists) {
                         echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}"
                         versionPom = "${pom.version}"                        nexusArtifactUploader(
                             nexusVersion: NEXUS_VERSION,
@@ -45,7 +46,8 @@ pipeline {
                                 file: "pom.xml",
                                 type: "pom"]
                             ]
-                        )                    } else {
+                        )                    
+                        } else {
                         error "*** File: ${artifactPath}, could not be found"
                     }
                 }
