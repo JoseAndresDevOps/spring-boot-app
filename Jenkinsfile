@@ -1,6 +1,6 @@
 pipeline{
     agent{
-        label "Nodojava"
+        label "nodo-java"
     }    stages{
         stage("test"){
             steps{
