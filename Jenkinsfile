@@ -12,7 +12,19 @@ pipeline {
         NEXUS_CREDENTIAL_ID = "jose-nexus"
     }
     stages{
-    	stage("Publish to Nexus") {
+        stage("test"){
+            steps{
+                sh "mvn test"
+                jacoco()
+                junit "target/surefire-reports/*.xml"
+            }
+        }
+        stage("build"){
+            steps{
+                sh "mvn clean package -DskipTest"
+            }
+        }
+        stage("Publish to Nexus") {
             steps {
                 script {
                     // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
@@ -51,18 +63,6 @@ pipeline {
                         error "*** File: ${artifactPath}, could not be found"
                     }
                 }
-            }
-        }
-        stage("test"){
-            steps{
-                sh "mvn test"
-                jacoco()
-                junit "target/surefire-reports/*.xml"
-            }
-        }
-        stage("build"){
-            steps{
-                sh "mvn clean package -DskipTest"
             }
         }
     }
