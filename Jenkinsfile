@@ -1,10 +1,15 @@
-pipeline{
-    agent{
+pipeline {
+    agent {
+    	node {
         label "Nodojava"
-    }    stages{
+        }
+    }    
+    
+    stages{
         stage("test"){
             steps{
                 sh "mvn test"
+                junit "target/surefire-reports/*.xml"
             }
         }
         stage("build"){
