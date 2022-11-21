@@ -1,4 +1,3 @@
-def versionPom = ""
 pipeline{
   agent {
         kubernetes {
@@ -46,11 +45,12 @@ spec:
           dockerImage = docker.build registryFrontend + ":$BUILD_NUMBER"
           docker.withRegistry( '', registryCredential) {
             dockerImage.push()
-          }stage("Builds"){
-        steps{
-            sh "mvn clean package -DskipTests"
+          }
         }
+      }
     }
+
+
 
     stage('Push Image latest to Docker Hub') {
       steps {
@@ -66,7 +66,7 @@ spec:
     stage('Deploy to K8s') {
 
       steps{
-        script {
+      configuracion/kubernetes-deployment/spring-boot-app/manifest.yml  script {
           if(fileExists("configuracion")){
             sh 'rm -r configuracion'
           }
