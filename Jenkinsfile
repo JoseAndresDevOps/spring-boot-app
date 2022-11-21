@@ -34,10 +34,10 @@ spec:
   }
 
   stages {
-    stage('Build') {
-      steps {
-        sh 'npm install && npm run build'
-      }
+    stage("Builds"){
+        steps{
+            sh "mvn clean package -DskipTests"
+        }
     }
 
     stage('Push Image to Docker Hub') {
@@ -46,9 +46,10 @@ spec:
           dockerImage = docker.build registryFrontend + ":$BUILD_NUMBER"
           docker.withRegistry( '', registryCredential) {
             dockerImage.push()
-          }
+          }stage("Builds"){
+        steps{
+            sh "mvn clean package -DskipTests"
         }
-      }
     }
 
     stage('Push Image latest to Docker Hub') {
