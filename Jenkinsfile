@@ -7,7 +7,7 @@ kind: Pod
 spec:
   containers:
   - name: shell
-    image: joseandresdevops/nodonodejs:1.0
+    image: joseandresdevops/nuevojava:1.0
     volumeMounts:
     - mountPath: /var/run/docker.sock
       name: docker-socket-volume
@@ -29,7 +29,7 @@ spec:
 
   environment {
     registryCredential='docker-hub-credentials'
-    registryFrontend = 'joseandresdevops/frontend-demo'
+    registryBackend = 'joseandresdevops/spring-boot-app'
   }
 
   stages {
@@ -42,7 +42,7 @@ spec:
     stage('Push Image to Docker Hub') {
       steps {
         script {
-          dockerImage = docker.build registryFrontend + ":$BUILD_NUMBER"
+          dockerImage = docker.build registryBackend + ":$BUILD_NUMBER"
           docker.withRegistry( '', registryCredential) {
             dockerImage.push()
           }
@@ -55,7 +55,7 @@ spec:
     stage('Push Image latest to Docker Hub') {
       steps {
         script {
-          dockerImage = docker.build registryFrontend + ":latest"
+          dockerImage = docker.build registryBackend + ":latest"
           docker.withRegistry( '', registryCredential) {
             dockerImage.push()
           }
@@ -71,8 +71,8 @@ spec:
             sh 'rm -r configuracion'
           }
         }
-        sh 'git clone https://github.com/dberenguerdevcenter/kubernetes-helm-docker-config.git configuracion --branch test-implementation'
-        sh 'kubectl apply -f configuracion/kubernetes-deployment/angular-14-app/manifest.yml -n default --kubeconfig=configuracion/kubernetes-config/config'
+        sh 'git clone https://github.com/JoseAndresDevOps/kubernetes-helm-docker-config.git configuracion --branch test-implementation'
+        sh 'kubectl apply -f configuracion/kubernetes-deployment/spring-boot-app/manifest.yml -n default --kubeconfig=configuracion/kubernetes-config/config'
       }
     }
 
