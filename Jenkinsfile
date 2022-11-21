@@ -66,7 +66,7 @@ spec:
     stage('Deploy to K8s') {
 
       steps{
-      configuracion/kubernetes-deployment/spring-boot-app/manifest.yml script {
+        script {
           if(fileExists("configuracion")){
             sh 'rm -r configuracion'
           }
@@ -75,6 +75,7 @@ spec:
         sh 'kubectl apply -f configuracion/kubernetes-deployment/angular-14-app/manifest.yml -n default --kubeconfig=configuracion/kubernetes-config/config'
       }
     }
+
   }
 
   post {
