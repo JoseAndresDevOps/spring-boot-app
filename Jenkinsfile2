@@ -7,7 +7,7 @@ kind: Pod
 spec:
   containers:
   - name: shell
-    image: joseandresdevops/nuevojava:2.0
+    image: joseandresdevops/nuevojava:1.0
     volumeMounts:
     - mountPath: /var/run/docker.sock
       name: docker-socket-volume
