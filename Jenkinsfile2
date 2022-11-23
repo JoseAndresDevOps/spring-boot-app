@@ -74,7 +74,7 @@ spec:
                             sh './run.sh -n -t test/perform_test.jmx -l test/perform_test.jtl'
                             sh 'pwd'
                             sh 'docker cp jmeter:/home/jmeter/apache-jmeter-5.5/test/perform_test.jtl $(pwd)/test'
-                            perfReport '$(pwd)/test/perform_test.jtl'
+                            perfReport 'test/perform_test.jtl'
                     }
 
                 }
